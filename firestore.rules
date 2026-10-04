@@ -1,0 +1,55 @@
+rules_version = '2';
+
+// Regras do Cloud Firestore para a Lista de Presentes.
+//
+//  reserved/{idDoPresente}  → um documento por presente reservado.
+//      Qualquer pessoa LÊ (é assim que o site mostra o item como "Já escolhido").
+//      Qualquer pessoa pode CRIAR, mas nunca alterar nem apagar. Como o id do documento
+//      é o id do presente, um item já reservado não pode ser reservado de novo.
+//
+//  messages/{idDoPresente}  → nome, mensagem e presente de cada convidado.
+//      Ninguém lê pelo site (você lê pelo painel do Firebase, que ignora estas regras).
+//      Só pode ser criado junto com a reserva do mesmo presente.
+//
+// Para liberar um presente de novo: apague o documento dele em "reserved" pelo painel.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function idValido(id) {
+      return id.matches('^[a-z0-9-]{1,60}$');
+    }
+
+    match /reserved/{giftId} {
+      allow read: if true;
+
+      allow create: if idValido(giftId)
+        && request.resource.data.keys().hasOnly(['takenAt'])
+        && request.resource.data.takenAt == request.time
+        && existsAfter(/databases/$(database)/documents/messages/$(giftId));
+
+      allow update, delete: if false;
+    }
+
+    match /messages/{giftId} {
+      allow read: if false;
+
+      allow create: if idValido(giftId)
+        && request.resource.data.keys().hasAll(['guestName', 'message', 'giftName', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['guestName', 'message', 'giftName', 'createdAt'])
+        && request.resource.data.guestName is string
+        && request.resource.data.guestName.size() >= 1
+        && request.resource.data.guestName.size() <= 80
+        && request.resource.data.message is string
+        && request.resource.data.message.size() >= 1
+        && request.resource.data.message.size() <= 1000
+        && request.resource.data.giftName is string
+        && request.resource.data.giftName.size() >= 1
+        && request.resource.data.giftName.size() <= 120
+        && request.resource.data.createdAt == request.time
+        && existsAfter(/databases/$(database)/documents/reserved/$(giftId));
+
+      allow update, delete: if false;
+    }
+  }
+}

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Chá de Casa Nova da Thanyara</title>
+  <meta name="description" content="Escolha um item e faça parte dessa nova etapa!">
+  <meta name="theme-color" content="#E6EFF9">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Chá de Casa Nova da Thanyara">
+  <meta property="og:description" content="Escolha um item e faça parte dessa nova etapa!">
+  <!-- Para aparecer uma imagem na prévia do WhatsApp: publique uma imagem 1200x630 na pasta img/
+       e troque a linha abaixo pelo endereço completo dela (tirando as marcas de comentário). -->
+  <!-- <meta property="og:image" content="https://SEU-SITE.com/img/previa.jpg"> -->
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div id="banner-demo" class="banner-demo" hidden>
+    <span><strong>Modo de demonstração.</strong> As escolhas ficam só neste navegador e nenhum e-mail é enviado. Preencha js/config.js para valer de verdade.</span>
+    <button type="button" id="limpar-demo" class="link">Limpar reservas de teste</button>
+  </div>
+
+  <main>
+
+    <!-- ========================= LISTA ========================= -->
+    <div id="view-lista">
+      <header class="hero miolo">
+        <div class="hero__texto">
+          <h1>Chá de Casa Nova da Thanyara</h1>
+          <p class="hero__sub">Escolha um item e faça parte dessa nova etapa!</p>
+          <div class="placar">
+            <p id="placar" aria-live="polite">Carregando a lista…</p>
+            <label class="troca">
+              <input type="checkbox" id="so-disp">
+              <span>Só os disponíveis</span>
+            </label>
+          </div>
+        </div>
+
+        <img class="hero__porta" src="img/nossa-senhora.png" width="256" height="360" alt="Nossa Senhora Aparecida">
+      </header>
+
+      <div class="barra">
+        <nav class="barra__in" id="chips" aria-label="Ir para uma seção da lista"></nav>
+      </div>
+      <!-- INÍCIO DO BANNER PIX -->
+      <div class="miolo">
+        <button type="button" class="banner-pix" id="btn-abrir-pix">
+          <div class="banner-pix__icone">
+            <!-- Ícone de um coração desenhado -->
+            <svg viewBox="0 0 24 24" width="32" height="32" class="ln f-gema"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          </div>
+          <div class="banner-pix__textos">
+            <h2>Prefere fazer um Pix?</h2>
+            <p>Contribua com o valor que desejar ou escolha esta opção caso os itens tenham acabado.</p>
+          </div>
+          <div class="banner-pix__seta">
+            <svg viewBox="0 0 20 20" width="24" height="24" aria-hidden="true"><path class="ln th" d="M7 4.5l5.5 5.5-5.5 5.5"/></svg>
+          </div>
+        </button>
+      </div>
+      <!-- FIM DO BANNER PIX -->
+
+      <div id="aviso" class="aviso miolo" role="status" hidden></div>
+
+      <div id="lista" class="lista miolo is-carregando"></div>
+    </div>
+
+    <!-- ========================= FORMULÁRIO ========================= -->
+    <section id="view-form" class="tela" hidden aria-labelledby="form-item">
+      <div class="tela__col">
+        <button type="button" class="voltar" data-voltar>
+          <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" focusable="false"><path class="ln th" d="M12.5 4.5 7 10l5.5 5.5"/></svg>
+          Voltar para a lista
+        </button>
+
+        <div class="ficha">
+          <div class="ficha__topo">
+            <div class="item__arco ficha__arco" id="form-arco"></div>
+            <div>
+              <p class="ficha__rotulo">Você está reservando</p>
+              <h2 class="ficha__item" id="form-item" tabindex="-1"></h2>
+              <p class="ficha__cat" id="form-cat"></p>
+            </div>
+          </div>
+
+          <form id="form" novalidate>
+            <div class="campo">
+              <label for="nome">Seu nome</label>
+              <input id="nome" name="nome" type="text" autocomplete="name" maxlength="80" required aria-describedby="erro-nome">
+              <p class="erro" id="erro-nome" hidden></p>
+            </div>
+
+            <div class="campo">
+              <label for="msg">Mensagem de carinho para a Thanyara</label>
+              <textarea id="msg" name="msg" rows="5" maxlength="600" required aria-describedby="erro-msg cont-msg"></textarea>
+              <p class="contador" id="cont-msg"><span id="cont">0</span> de 600 caracteres</p>
+              <p class="erro" id="erro-msg" hidden></p>
+            </div>
+
+            <p class="erro erro--geral" id="erro-geral" role="alert" hidden></p>
+
+            <button type="submit" class="btn btn--primario" id="btn-confirmar">Confirmar presente</button>
+            <p class="sr-only" id="status-envio" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= OBRIGADO ========================= -->
+    <section id="view-obrigado" class="tela obrigado" hidden aria-labelledby="ob-titulo">
+      <div class="tela__col">
+        <svg class="obrigado__arco" viewBox="0 0 120 130" aria-hidden="true" focusable="false">
+          <path class="arco-fundo f-salvia-c" d="M10 122V52a50 50 0 0 1 100 0v70z"/>
+          <path class="ln arco-linha" pathLength="1" d="M10 122V52a50 50 0 0 1 100 0v70z"/>
+          <path class="ln check" pathLength="1" d="M38 82l16 16 30-38"/>
+        </svg>
+
+        <h2 id="ob-titulo" tabindex="-1">Obrigado!</h2>
+        <p class="obrigado__texto" id="ob-texto"></p>
+
+        <div class="recibo">
+          <div class="item__arco recibo__arco" id="ob-arco"></div>
+          <div>
+            <p class="ficha__rotulo">Seu presente</p>
+            <p class="recibo__item" id="ob-item"></p>
+          </div>
+        </div> <!-- ⚠️ ESTE FECHO É MUITO IMPORTANTE ⚠️ -->
+
+        <!-- A CAIXA DO PIX COMEÇA SÓ DEPOIS DO RECIBO ESTAR FECHADO -->
+        <!-- A CAIXA DO PIX MAIS LIMPA -->
+        <div class="area-pix" id="area-pix" hidden>
+          <!-- Lembre-se de colocar a imagem real na pasta img/ -->
+          <img src="img/Qrcode.jpeg" alt="QR Code do Pix" class="pix-qrcode" width="200" height="200">
+          
+          <div class="pix-chave-box">
+            <p class="pix-chave-texto" id="chave-pix">c98a8c66-5f10-4455-8b7a-d8a09a2f4664</p>
+            <button type="button" class="btn btn--contorno" id="btn-copiar-pix">Copiar Chave</button>
+          </div>
+        </div>
+        <!-- 👆 ATÉ AQUI 👆 -->
+
+        <div class="falha" id="ob-falha" hidden>
+        </div>
+
+        <div class="falha" id="ob-falha" hidden>
+          <p><strong>O e-mail para a Thanyara não saiu.</strong> Seu presente continua reservado. Mande o seu recado por WhatsApp para ela saber o que você vai levar.</p>
+          <button type="button" class="btn btn--contorno" id="ob-copiar">Copiar meu recado</button>
+        </div>
+
+        <button type="button" class="btn btn--primario" data-voltar>Ver a lista</button>
+      </div>
+    </section>
+
+  </main>
+
+  <noscript>
+    <p style="padding:24px;font-family:sans-serif">Ative o JavaScript do navegador para ver a lista de presentes.</p>
+  </noscript>
+
+  <script src="js/config.js"></script>
+  <script src="js/gifts-data.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="js/mailer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

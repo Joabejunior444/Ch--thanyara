@@ -1,0 +1,37 @@
+<!--
+  Template do e-mail que a Thanyara recebe.
+  Cole este conteúdo no editor de código do template, no EmailJS (veja o README, passo 3).
+
+  Variáveis usadas: {{from_name}}  {{gift_name}}  {{gift_category}}  {{message}}  {{sent_at}}
+
+  No painel do EmailJS, preencha também:
+    To Email:  o e-mail da Thanyara (fixo, não fica no site)
+    Subject:   {{from_name}} vai te dar: {{gift_name}}
+    Reply To:  (deixe em branco)
+-->
+<div style="margin:0;padding:24px 12px;background:#E6EFF9;font-family:Arial,Helvetica,sans-serif;color:#14284B;">
+  <div style="max-width:520px;margin:0 auto;background:#FAFCFF;border-radius:20px;padding:28px 24px;">
+
+    <p style="margin:0 0 4px;font-size:14px;color:#4A5F80;">Chá de Casa Nova</p>
+    <h1 style="margin:0 0 20px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:26px;line-height:1.2;">
+      {{from_name}} escolheu um presente para você
+    </h1>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:22px;">
+      <tr>
+        <td style="background:#DDE5F8;border-radius:14px;padding:16px 18px;">
+          <p style="margin:0 0 2px;font-size:13px;color:#4A5F80;">Presente reservado</p>
+          <p style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:22px;line-height:1.25;color:#173F7C;">{{gift_name}}</p>
+          <p style="margin:6px 0 0;font-size:14px;color:#2B5C93;">{{gift_category}}</p>
+        </td>
+      </tr>
+    </table>
+
+    <p style="margin:0 0 8px;font-size:14px;color:#4A5F80;">Mensagem de {{from_name}}</p>
+    <div style="border-left:4px solid #6E9ED6;padding:4px 0 4px 16px;margin-bottom:24px;">
+      <p style="margin:0;font-size:16px;line-height:1.6;white-space:pre-wrap;">{{message}}</p>
+    </div>
+
+    <p style="margin:0;font-size:13px;color:#4A5F80;">Recebido em {{sent_at}}</p>
+  </div>
+</div>
